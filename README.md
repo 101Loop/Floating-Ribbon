@@ -1,5 +1,7 @@
 # Floating Ribbon
 
+[![Build Status](https://travis-ci.org/101Loop/Floating-Ribbon.svg?branch=master)](https://travis-ci.org/101Loop/Floating-Ribbon)
+
 A new Flutter package for creating floating ribbons on images.
 
 <p>
