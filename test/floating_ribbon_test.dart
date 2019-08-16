@@ -16,10 +16,13 @@ void main() {
               padding: const EdgeInsets.all(8.0),
               child: FlutterLogo(),
             ),
-            ribbonText: 'Test',
-          ribbonTextStyle: TextStyle(
-            fontSize: 13,
-          ),
+            ribbon: Text(
+              'Test',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
+            ),
           childDecoration: BoxDecoration(
             color: Colors.grey,
           ),

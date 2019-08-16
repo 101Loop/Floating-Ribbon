@@ -34,20 +34,21 @@ class FloatingRibbon extends StatelessWidget {
   ///
   FloatingRibbon({
     Key key,
-    this.textKey,
     @required this.height,
     @required this.width,
     @required this.childHeight,
     @required this.childWidth,
     @required this.child,
     this.childDecoration,
-    this.ribbonText,
-    this.ribbonTextStyle,
+    this.ribbon,
     this.ribbonHeight = 20,
     this.clipper = Clipper.right,
-    this.ribbonSwatch = Colors.red,
-  })  : assert(ribbonText != null,
-            'A non-null String must be provided to a FloatingRibbon widget.'),
+    this.ribbonSwatch = Colors.redAccent,
+    this.ribbonShadowSwatch = Colors.red,
+    this.shadowHeight,
+    this.equilateralTriangleWidth = 5,
+  })  : assert(ribbon != null,
+  'A non-null child Widget must be provided to a FloatingRibbon widget.'),
         super(key: key);
 
   /// [height] defines the height of the box occupied by its children.
@@ -90,15 +91,8 @@ class FloatingRibbon extends StatelessWidget {
   /// wrap it with [ClipRect], [ClipRRect], or [ClipPath] and set the decoration.
   final Decoration childDecoration;
 
-  /// [ribbonText] defines the test displayed on the ribbon.
-  final String ribbonText;
-
-  /// If non-null, [ribbonTextStyle] is the style to use for the [ribbonText].
-  ///
-  /// If the style's 'inherit' property is true, the style will be merged with
-  /// the closest enclosing [DefaultTextStyle]. Otherwise, the style will
-  /// replace the closest enclosing [DefaultTextStyle].
-  final TextStyle ribbonTextStyle;
+  /// [ribbon] defines the child widget displayed on the ribbon.
+  final Widget ribbon;
 
   /// If non-null, [clipper] defines what type of shadow you want.
   ///
@@ -113,19 +107,32 @@ class FloatingRibbon extends StatelessWidget {
 
   /// If non-null, [ribbonSwatch] defines the primary swatch for the ribbon.
   ///
-  /// Default value for [ribbonSwatch] is Colors.red. Note that this color is
-  /// used for the shadow and is lightened to [ribbonSwatch.shade300] for the
-  /// ribbon to add effect.
-  ///
-  /// * [ribbonSwatch] should be chosen from one of the swatches defined by the
-  ///   material design spec. This should be one of the maps from the [Colors]
-  ///   class that do not have "accent" in their name.
-  final MaterialColor ribbonSwatch;
+  /// Default value for [ribbonSwatch] is Colors.redAccent. Note that the color
+  /// should be lightened for the ribbon and darkened for the shadow to add
+  /// a charming effect
+  final Color ribbonSwatch;
 
-  /// Sets the key for the resulting [ribbonText] parent widget.
+  /// If non-null, [ribbonShadowSwatch] defines the primary swatch for the ribbon.
   ///
-  /// This allows you to find the actual `Text` widget built by [FloatingRibbon].
-  final Key textKey;
+  /// Default value for [ribbonShadowSwatch] is Colors.red.
+  final Color ribbonShadowSwatch;
+
+
+  /// If non-null, [shadowHeight] defines the height of the shadow.
+  ///
+  /// [shadowHeight] defaults to 5 and is an optional parameter. Note that this
+  /// is an extra height given to the shadow.
+  ///
+  /// The formula for shadow height is -> ([width] - [childWidth]) / 2 + [shadowHeight]
+  final double shadowHeight;
+
+  /// If non-null, [equilateralTriangleWidth] defines the width of the shadow.
+  ///
+  /// Note that this would only affect when [clipper] is set to [Clipper.equilateral].
+  /// The formula for shadow width is -> ([width] - [childWidth]) / 2 + [equilateralTriangleWidth]
+  ///
+  /// [equilateralTriangleWidth] defaults to 5.
+  final double equilateralTriangleWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -150,14 +157,9 @@ class FloatingRibbon extends StatelessWidget {
                 Container(
                   width: width,
                   height: ribbonHeight,
-                  color: ribbonSwatch.shade300,
-                  child: Text(
-                    ribbonText ?? '',
-                    key: textKey,
-                    style: ribbonTextStyle,
-                    textAlign: TextAlign.center,
-                    textDirection: TextDirection.ltr,
-                  ),
+                  color: ribbonSwatch,
+                  child: Directionality(
+                      textDirection: TextDirection.ltr, child: ribbon),
                 ),
                 Container(
                   width: width,
@@ -167,12 +169,7 @@ class FloatingRibbon extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: _getShadow(
-                      clipper,
-                      BoxConstraints(maxHeight: height, maxWidth: width),
-                      childWidth,
-                      ribbonSwatch,
-                    ),
+                    children: _getShadow(),
                   ),
                 ),
               ],
@@ -183,24 +180,23 @@ class FloatingRibbon extends StatelessWidget {
     );
   }
 
-  List<Widget> _getShadow(Clipper clipper, BoxConstraints constraints,
-      double childWidth, MaterialColor color) {
+  List<Widget> _getShadow() {
     if (clipper == Clipper.right) {
       return <Widget>[
         ClipPath(
           clipper: LeftTriangleClipper(),
           child: Container(
-            height: (constraints.maxWidth - childWidth) / 2 + 5,
-            width: (constraints.maxWidth - childWidth) / 2,
-            color: color,
+            height: (width - childWidth) / 2 + 5,
+            width: (width - childWidth) / 2,
+            color: ribbonShadowSwatch,
           ),
         ),
         ClipPath(
           clipper: RightTriangleClipper(),
           child: Container(
-            height: (constraints.maxWidth - childWidth) / 2 + 5,
-            width: (constraints.maxWidth - childWidth) / 2,
-            color: color,
+            height: (width - childWidth) / 2 + 5,
+            width: (width - childWidth) / 2,
+            color: ribbonShadowSwatch,
           ),
         ),
       ];
@@ -209,17 +205,17 @@ class FloatingRibbon extends StatelessWidget {
         ClipPath(
           clipper: EquilateralTriangleClipper(),
           child: Container(
-            height: (constraints.maxWidth - childWidth) / 2 + 5,
-            width: (constraints.maxWidth - childWidth) / 2,
-            color: color,
+            height: (width - childWidth) / 2 + shadowHeight,
+            width: (width - childWidth) / 2 + equilateralTriangleWidth,
+            color: ribbonShadowSwatch,
           ),
         ),
         ClipPath(
           clipper: EquilateralTriangleClipper(),
           child: Container(
-            height: (constraints.maxWidth - childWidth) / 2 + 5,
-            width: (constraints.maxWidth - childWidth) / 2,
-            color: color,
+            height: (width - childWidth) / 2 + shadowHeight,
+            width: (width - childWidth) / 2 + equilateralTriangleWidth,
+            color: ribbonShadowSwatch,
           ),
         ),
       ];
