@@ -2,6 +2,10 @@
 
 A new Flutter package for creating floating ribbons on images.
 
+<p>
+    <img src="https://github.com/101Loop/Floating-Ribbon/blob/master/example.gif?raw=true"/>
+</p>
+
 ## Getting Started
 
 This project is a starting point for a Dart
