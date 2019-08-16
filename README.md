@@ -1,6 +1,6 @@
 # Floating Ribbon
 
-[![pub package](https://img.shields.io/badge/pub-v1.0.0-blue)](https://pub.dev/packages/floating_ribbon) [![Build Status](https://travis-ci.org/101Loop/Floating-Ribbon.svg?branch=master)](https://travis-ci.org/101Loop/Floating-Ribbon)
+[![pub package](https://img.shields.io/badge/pub-v1.0.0-blue)](https://pub.dev/packages/floating_ribbon) [![Build Status](https://travis-ci.org/101Loop/Floating-Ribbon.svg?branch=master)](https://travis-ci.org/101Loop/Floating-Ribbon) [![LICENSE](https://img.shields.io/badge/license-MIT-green)](https://github.com/101Loop/Floating-Ribbon/blob/master/LICENSE)
 
 A new Flutter package for creating floating ribbons on images.
 
