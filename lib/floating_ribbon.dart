@@ -48,7 +48,7 @@ class FloatingRibbon extends StatelessWidget {
     this.shadowHeight,
     this.equilateralTriangleWidth = 5,
   })  : assert(ribbon != null,
-  'A non-null child Widget must be provided to a FloatingRibbon widget.'),
+            'A non-null child Widget must be provided to a FloatingRibbon widget.'),
         super(key: key);
 
   /// [height] defines the height of the box occupied by its children.
@@ -116,7 +116,6 @@ class FloatingRibbon extends StatelessWidget {
   ///
   /// Default value for [ribbonShadowSwatch] is Colors.red.
   final Color ribbonShadowSwatch;
-
 
   /// If non-null, [shadowHeight] defines the height of the shadow.
   ///
