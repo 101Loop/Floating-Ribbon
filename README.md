@@ -1,4 +1,4 @@
-# floating_ribbon
+# Floating Ribbon
 
 A new Flutter package for creating floating ribbons on images.
 
